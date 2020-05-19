@@ -61,6 +61,9 @@ func AuthenticateRequest(request *http.Request) *errors.RestErr {
 	}
 	at, err := getAccessToken(accessTokenId)
 	if err != nil {
+		if err.Status == 404 {
+			return nil
+		}
 		return err
 	}
 	request.Header.Add(headerXCallerId, fmt.Sprintf("%v", at.UserId))
